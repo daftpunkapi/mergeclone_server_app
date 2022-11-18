@@ -128,7 +128,6 @@ def webhook():
 
             # Delete existing content in MongoDB
             x = collection.delete_many({})
-            print(x.deleted_count, ' documents deleted')
 
 
             data.reset_index(drop= True, inplace=True)
@@ -136,6 +135,8 @@ def webhook():
 
             # Insert collection
             collection.insert_many(data_dict)
+
+            return (str(x.deleted_count)+" tickets deleted")
 
         # Running Github script
         elif integration == "Github":
@@ -197,17 +198,15 @@ def webhook():
 
             # Delete existing content in MongoDB
             x = collection.delete_many({})
-            print(x.deleted_count," documents deleted")
 
             data.reset_index(drop= True, inplace=True)
             data_dict = data.to_dict("records")
 
-
             # Insert collection
             collection.insert_many(data_dict)
-            
+            return (str(x.deleted_count)+" tickets deleted")
         else:
-            print("incorrect integration")
+            return "incorrect integration"
         
         return 'success', 200
     else:
