@@ -3,6 +3,7 @@ import pandas as pd
 import requests
 import json
 from pymongo import MongoClient
+import numpy as np
 
 app = Flask(__name__)
 
@@ -118,10 +119,12 @@ def webhook():
             'priority']]
 
 
+
             # Connect to MongoDB
+            GenCollection = "Jira - "+username
             client =  MongoClient("mongodb+srv://daft:punk@mergedev.iiiixxn.mongodb.net/?retryWrites=true&w=majority")
             db = client['Ticket_Common_Model']
-            collection = db['Jira']
+            collection = db[GenCollection]
 
             # Delete existing content in MongoDB
             x = collection.delete_many({})
@@ -135,7 +138,7 @@ def webhook():
             collection.insert_many(data_dict)
 
         # Running Github script
-        elif integration == "Github"
+        elif integration == "Github":
            
             response = requests.get(
                 url = "https://api.github.com/orgs/"+subdomain+"/issues?state=all&filter=all",
@@ -187,9 +190,10 @@ def webhook():
 
 
             # Connect to MongoDB
+            GenCollection = "Github - "+username
             client =  MongoClient("mongodb+srv://daft:punk@mergedev.iiiixxn.mongodb.net/?retryWrites=true&w=majority")
             db = client['Ticket_Common_Model']
-            collection = db['Github']
+            collection = db[GenCollection]
 
             # Delete existing content in MongoDB
             x = collection.delete_many({})
